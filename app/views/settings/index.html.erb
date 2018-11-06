@@ -1,0 +1,50 @@
+<head>
+  <style>
+    * {
+      font-family: Arial;
+    }
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 80%;
+    }
+    
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 5px;
+    }
+    
+    input[type="text"] {
+      font-size: 15px;
+      width:50%;
+      border: none;
+      text-align: center;
+    }
+    
+    input[type="button"] {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+    <div align="center">
+        <%= form_with url: "/settings", method: 'post'  do |f|  %>
+            <p>
+                <%= f.label :classes_a, 'A smjena razredi' %><br/>
+                <%= f.text_field :classes_a, value: @classes_a %>
+            </p>
+            <p>
+                <%= f.label :classes_b, 'B smjena razredi' %><br/>
+                <%= f.text_field :classes_b, value: @classes_b %>
+            </p>
+            <p>
+                <%= f.label :shift_bit, 'A smjena ujutro' %><br/>
+                <%= f.radio_button :shift_bit, 0, checked: !@shift_bit.positive? %>Parnim tjednom<br/>
+                <%= f.radio_button :shift_bit, 1, checked: @shift_bit.positive? %>Neparnim tjednom<br/>
+            </p>
+            <%= f.submit "Save" %>
+        <% end %>
+    </div>
+</body>

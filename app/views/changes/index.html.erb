@@ -1,0 +1,46 @@
+<head>
+  <style>
+    * {
+      font-family: Arial;
+    }
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 80%;
+    }
+    
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 5px;
+    }
+    
+    input[type="text"] {
+      font-size: 15px;
+      width:50%;
+      border: none;
+      text-align: center;
+    }
+    
+    input[type="button"] {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+    <div align="center">
+        <%= form_with url: "/changes", method: 'post'  do |f|  %>
+            <p>
+                <%= f.label :datum %><br/>
+                <%= f.date_field :date %>
+            </p>
+            <p>
+                <%= f.label :shift %><br/>
+                <%= f.radio_button :shift, 'A' %>A<br/>
+                <%= f.radio_button :shift, 'B' %>B<br/>
+            </p>
+            <%= f.submit "Find" %>
+        <% end %>
+    </div>
+</body>

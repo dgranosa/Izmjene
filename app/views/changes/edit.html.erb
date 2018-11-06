@@ -1,0 +1,62 @@
+<head>
+  <style>
+    * {
+      font-family: Arial;
+    }
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 80%;
+    }
+    
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 5px;
+    }
+    
+    input[type="text"] {
+      font-size: 15px;
+      width:50%;
+      border: none;
+      text-align: center;
+    }
+    
+    input[type="button"] {
+      text-align: center;
+    }
+  
+  
+  </style>
+</head>
+
+<body>
+    <%= button_to "Back", changes_path, method: :get %>
+    <div align="center">
+        <h1>Test</h1>
+        <%= form_for(@change) do |f| %>
+            <table>
+                <tr>
+                    <th>Razredi</th>
+                    <% @header.each do |x| %>
+                        <th><%= x %></th>
+                    <% end %>
+                </tr>
+                <% counter = 0 %>
+                <% @classes.each do |x| %>
+                    <tr>
+                        <th><%= x %></th>
+                        <% for i in 0..8 %>
+                            <td>
+                                <%= f.text_field :data, multiple: true, value: @data[counter * 9 + i] %>
+                            </td>
+                        <% end %>
+                    </tr>
+                    <% counter+= 1 %>
+                <% end %>
+            </table>
+
+            <%= f.submit "Save changes" %>
+        <% end %>
+    </div>
+</body>
