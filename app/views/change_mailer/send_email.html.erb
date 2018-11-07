@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<head>
+  <style>
+    * {
+      font-family: Arial;
+    }
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 80%;
+    }
+    
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 5px;
+    }
+    
+    input[type="text"] {
+      font-size: 15px;
+      width:50%;
+      border: none;
+      text-align: center;
+    }
+    
+    input[type="button"] {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+      <h1 align = "center">Izmjene za <%= @klass %>, <%= @date %></h1>
+      <table align = "center">
+          <tr>
+              <% @header.each do |x| %>
+                  <th><%= x %></th>
+              <% end %>
+          </tr>
+          <tr>
+              <% for i in 0..8 %>
+                  <td>
+                    <%= @data[i] %>
+                  </td>
+              <% end %>
+          </tr>
+      </table>
+  </body>
+</html>

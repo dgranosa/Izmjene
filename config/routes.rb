@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   post 'subscriptions', to: 'subscriptions#create'
   get 'subscriptions/delete/:email', to: 'subscriptions#delete'
 
+  post 'send_changes', to: 'changes#send_changes'
+
   resources :changes
   resources :settings, only: [:index, :create]
 end

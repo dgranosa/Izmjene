@@ -48,7 +48,7 @@
                         <th><%= x %></th>
                         <% for i in 0..8 %>
                             <td>
-                                <%= f.text_field :data, multiple: true, value: @data[counter * 9 + i] %>
+                                <%= f.text_field :data, multiple: true, value: @data[counter * 9 + i].to_s %>
                             </td>
                         <% end %>
                     </tr>

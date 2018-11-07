@@ -33,11 +33,11 @@
         <%= form_with url: "/changes", method: 'post'  do |f|  %>
             <p>
                 <%= f.label :datum %><br/>
-                <%= f.date_field :date %>
+                <%= f.date_field :date, value: Date.current + 1.day %>
             </p>
             <p>
                 <%= f.label :shift %><br/>
-                <%= f.radio_button :shift, 'A' %>A<br/>
+                <%= f.radio_button :shift, 'A', checked: true %>A<br/>
                 <%= f.radio_button :shift, 'B' %>B<br/>
             </p>
             <%= f.submit "Find" %>

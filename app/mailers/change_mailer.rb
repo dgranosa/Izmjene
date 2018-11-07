@@ -1,13 +1,13 @@
 class ChangeMailer < ApplicationMailer
-    default from: 'example@mail.com'
+    default from: 'izmjene.tsrb@gmail.com'
 
-    def send_email(email, header, data)
+    def send_email(email, date, header, klass, data)
         @email = email
+        @date = date
         @header = header
+        @klass = klass
         @data = data
 
-        binding.pry
-
-        mail(to: @email, subject: 'Izmjene')
+        mail(to: @email, subject: 'Izmjene za ' + date)
     end
 end
