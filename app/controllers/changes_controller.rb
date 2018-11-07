@@ -49,9 +49,10 @@ class ChangesController < ApplicationController
     def send_changes
         hash = Hash[params[:classes].zip(params[:data].each_slice(9).to_a)]
         subscriptions = Subscription.where(shift: params[:shift])
+        domain = request.host + ':' + request.port.to_s
 
         subscriptions.each do |sub|
-            ChangeMailer.send_email(sub.email, params[:date], params[:header], sub.klass, hash[sub.klass]).deliver
+            ChangeMailer.send_email(sub.email, params[:date], params[:header], sub.klass, hash[sub.klass], domain).deliver
         end
     end
 
