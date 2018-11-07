@@ -1,5 +1,20 @@
 class ChangesController < ApplicationController
     def index
+        if params[:date]
+            @change = Change.where(shift: params[:shift], date: params[:date]).first
+
+            if !@change
+                render plain: 'Not found'
+            else
+                get_table
+                i = @classes.find_index(params[:class]) * 9
+                render json: {
+                    header: @header.to_a,
+                    data: @data[i..(i+8)],
+                    updated_at: @change.updated_at.to_s
+                }
+            end
+        end
     end
 
     def create
