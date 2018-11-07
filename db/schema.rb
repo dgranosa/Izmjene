@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2018_11_06_210527) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "changes", force: :cascade do |t|
     t.date "date", null: false
     t.string "shift", null: false
