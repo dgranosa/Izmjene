@@ -25,15 +25,13 @@
     input[type="button"] {
       text-align: center;
     }
-  
-  
   </style>
 </head>
 
 <body>
     <%= button_to "Back", changes_path, method: :get %>
     <div align="center">
-        <h1>Test</h1>
+        <h1>Edit changes for <%= @change.date.strftime('%d/%m/%Y') %></h1>
         <%= form_for(@change) do |f| %>
             <table>
                 <tr>

@@ -1,46 +1,61 @@
 <head>
-  <style>
-    * {
-      font-family: Arial;
-    }
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 80%;
-    }
-    
-    td, th {
-        border: 1px solid #dddddd;
-        text-align: center;
-        padding: 5px;
-    }
-    
-    input[type="text"] {
-      font-size: 15px;
-      width:50%;
-      border: none;
-      text-align: center;
-    }
-    
-    input[type="button"] {
-      text-align: center;
-    }
-  </style>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 5px;
+        }
+
+        input[type="text"] {
+            font-size: 15px;
+            width:50%;
+            border: none;
+            text-align: center;
+        }
+
+        input[type="submit"] {
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+            cursor: pointer;
+            background-color: white;
+            color: black;
+            border: 2px solid #000;
+            text-align: center;
+        }
+
+        input[type="submit"]:hover {
+            border: 2px solid #000;
+            background-color: #000;
+            color: white;
+        }    
+    </style>
 </head>
 
-<body>
-    <div align="center">
-        <%= form_with url: "/changes", method: 'post'  do |f|  %>
-            <p>
-                <%= f.label :datum %><br/>
-                <%= f.date_field :date, value: Date.current + 1.day %>
-            </p>
-            <p>
-                <%= f.label :shift %><br/>
-                <%= f.radio_button :shift, 'A', checked: true %>A<br/>
-                <%= f.radio_button :shift, 'B' %>B<br/>
-            </p>
-            <%= f.submit "Find" %>
-        <% end %>
-    </div>
-</body>
+<div align="center">
+    <%= form_with url: "/changes", method: 'post'  do |f|  %>
+        <p>
+            <%= f.label :datum %><br/>
+            <%= f.date_field :date, value: Date.current + 1.day %>
+        </p>
+        <p>
+            <%= f.label :shift %><br/>
+            <%= f.radio_button :shift, 'A', checked: true %>A<br/>
+            <%= f.radio_button :shift, 'B' %>B<br/>
+        </p>
+        <%= f.submit "Find" %>
+    <% end %>
+</div>

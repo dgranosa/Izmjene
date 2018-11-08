@@ -1,8 +1,5 @@
 <head>
   <style>
-    * {
-      font-family: Arial;
-    }
     table {
         font-family: arial, sans-serif;
         border-collapse: collapse;
@@ -22,7 +19,7 @@
       text-align: center;
     }
     
-    input[type="button"] {
+    input[type="submit"] {
       text-align: center;
     }
   </style>
@@ -31,7 +28,7 @@
 <body>
     <%= button_to "Back", changes_path, method: :get %>
     <div align="center">
-        <h1>Test</h1>
+        <h1>Changes for <%= @change.date.strftime('%d/%m/%Y') %></h1>
         <table>
             <tr>
                 <th>Razredi</th>
@@ -52,7 +49,6 @@
                 <% counter+= 1 %>
             <% end %>
         </table>
-
         <%= button_to "Edit", edit_change_path(@change), method: :get %>
         <%= button_to "Publish", send_changes_path, params: { header: @header.to_a, date: @change.date, shift: @change.shift, classes: @classes, data: @data }, method: :post, remote: true %>
     </div>
