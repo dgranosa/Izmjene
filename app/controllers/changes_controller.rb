@@ -59,7 +59,7 @@ class ChangesController < ApplicationController
     private
 
     def get_table
-        @header = if (Date.current.cweek + (@change.shift == 'B' ? 1 : 0)) % 2 == Setting.shift_bit
+        @header = if (@change.date.cweek + (@change.shift == 'B' ? 1 : 0)) % 2 == Setting.shift_bit
                       1..9
                   else
                       -1..7
