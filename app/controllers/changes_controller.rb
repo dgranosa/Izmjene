@@ -1,6 +1,8 @@
 class ChangesController < ApplicationController
     def index
         if params[:date]
+            parse_schedule
+
             @change = Change.where(shift: params[:shift], date: params[:date]).first
 
             if !@change
@@ -8,9 +10,19 @@ class ChangesController < ApplicationController
             else
                 get_table
                 i = @classes.find_index(params[:class]) * 9
+                @data = @data[i..(i+8)]
+
+                x = $final[params[:class]][@change.date.wday.to_s][@header.first == -1 ? 6..14 : 1..9]
+                i = 0
+                while i < @data.count do
+                    x[i] = @data[i] if !@data[i].empty?
+                    i += 1
+                end
+                
                 render json: {
                     header: @header.to_a,
-                    data: @data[i..(i+8)],
+                    data: x,
+                    data2: @data2,
                     updated_at: @change.updated_at.to_s
                 }
             end
@@ -21,7 +33,7 @@ class ChangesController < ApplicationController
         @change = Change.where(shift: params[:shift], date: params[:date]).first
 
         if !@change
-            @change = Change.create(shift: params[:shift], date: params[:date], data: '')
+            @change = Change.create(shift: params[:shift], date: params[:date], data: '', data2: '')
         end
 
         redirect_to @change
@@ -41,7 +53,8 @@ class ChangesController < ApplicationController
         @change = Change.find(params[:id])
 
         @data = params[:change][:data].join(',')
-        @change.update(data: @data)
+        @data2 = params[:change][:data2].to_a.join(',')
+        @change.update(data: @data, data2: @data2)
 
         redirect_to @change
     end
@@ -72,5 +85,7 @@ class ChangesController < ApplicationController
                    end
         
         @data = @change.data.split(',')
+
+        @data2 = @change.data2.split(',')
     end
 end

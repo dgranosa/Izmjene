@@ -49,6 +49,26 @@
                 <% counter+= 1 %>
             <% end %>
         </table>
+
+        <br/>
+
+        <table id="table_data2">
+            <tr>
+                <th>Sat</th>
+                <th>Razred</th>
+                <th>Predmet</th>
+                <th>Ucionica</th>
+            </tr>
+            <% for i in 0...(@data2.count / 4) %>
+                <tr>
+                    <td><%= @data2[i * 4 + 0] %></td>
+                    <td><%= @data2[i * 4 + 1] %></td>
+                    <td><%= @data2[i * 4 + 2] %></td>
+                    <td><%= @data2[i * 4 + 3] %></td>
+                </tr>
+            <% end %>
+        </table>
+
         <%= button_to "Edit", edit_change_path(@change), method: :get %>
         <%= button_to "Publish", send_changes_path, params: { header: @header.to_a, date: @change.date, shift: @change.shift, classes: @classes, data: @data }, method: :post, remote: true %>
     </div>

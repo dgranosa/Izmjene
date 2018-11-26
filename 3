@@ -62,17 +62,15 @@
                     <th>Razred</th>
                     <th>Predmet</th>
                     <th>Ucionica</th>
-                    <th><input type="button" value="+" onclick="$('#table_data2 tr:last').after(x);" /></th>
+                    <th><input type="button" value="+" onclick="$('#table_data2 tr:last').after('<tr><td><input multiple=\'multiple\' type=\'text\' name=\'change[data2][]\' id=\'change_data2\'></td><td><input multiple=\'multiple\' type=\'text\' name=\'change[data2][]\' id=\'change_data2\'></td><td><input multiple=\'multiple\' type=\'text\' name=\'change[data2][]\' id=\'change_data2\'></td><td><input multiple=\'multiple\' type=\'text\' name=\'change[data2][]\' id=\'change_data2\'></td><td><input type=\'button\' value=\'-\' onclick=\'$(this).closest(\\\'tr\\\').remove()\'></td></tr>');" /></th>
                 </tr>
-                <% for i in 0...(@data2.count / 4) %>
-                    <tr>
-                        <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 0] %></td>
-                        <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 1] %></td>
-                        <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 2] %></td>
-                        <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 3] %></td>
-                        <td><input type="button" value="-" onclick="$(this).closest('tr').remove()" /></td>
-                    </tr>
-                <% end %>
+                <tr>
+                    <td><%= f.text_field :data2, multiple: true %></td>
+                    <td><%= f.text_field :data2, multiple: true %></td>
+                    <td><%= f.text_field :data2, multiple: true %></td>
+                    <td><%= f.text_field :data2, multiple: true %></td>
+                    <td><input type="button" value="-" onclick="$(this).closest('tr').remove()" /></td>
+                </tr>
             </table>
 
             <%= f.submit "Save changes" %>
@@ -80,5 +78,7 @@
     </div>
 </body>
     <script>
-        x = "<tr><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input type=\"button\" value=\"-\" onclick=\"$(this).closest('tr').remove()\"></td></tr>"
+        $("#addRow").click(function(){
+            $('#table_data2 tr:last').after('<tr><td>asd</td></tr>');
+        });
     </script>
