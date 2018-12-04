@@ -28,8 +28,18 @@
 <body>
     <%= button_to "Back", changes_path, method: :get %>
     <div align="center">
-        <h1>Changes for <%= @change.date.strftime('%d/%m/%Y') %></h1>
+        <h1>Izmjene za <%= @change.date.strftime('%d/%m/%Y') %></h1>
         <table>
+            <tr>
+                <th></th>
+                <% for i in 0..8 %>
+                    <th>
+                        <%= Time.parse(@starttime[i]).strftime("%R") %>
+                        -
+                        <%= Time.parse(@endtime[i]).strftime("%R") %>
+                    </th>
+                <% end %>
+            </tr>
             <tr>
                 <th>Razredi</th>
                 <% @header.each do |x| %>

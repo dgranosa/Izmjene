@@ -1,8 +1,8 @@
 class ChangesController < ApplicationController
+    before_action :parse_schedule
+
     def index
         if params[:date]
-            parse_schedule
-
             @change = Change.where(shift: params[:shift], date: params[:date]).first
 
             if !@change
@@ -11,18 +11,14 @@ class ChangesController < ApplicationController
                 get_table
                 i = @classes.find_index(params[:class]) * 9
                 @data = @data[i..(i+8)]
-
-                x = $final[params[:class]][@change.date.wday.to_s][@header.first == -1 ? 6..14 : 1..9]
-                i = 0
-                while i < @data.count do
-                    x[i] = @data[i] if !@data[i].empty?
-                    i += 1
-                end
                 
                 render json: {
                     header: @header.to_a,
-                    data: x,
+                    data: @data,
                     data2: @data2,
+                    schedule: $schedule[params[:class]][params[:shift] == 'A' ? 0 : 1][@change.date.wday][@header.first == -1 ? 6..14 : 1..9],
+                    starttime: @starttime,
+                    endtime: @endtime,
                     updated_at: @change.updated_at.to_s
                 }
             end
@@ -54,7 +50,9 @@ class ChangesController < ApplicationController
 
         @data = params[:change][:data].join(',')
         @data2 = params[:change][:data2].to_a.join(',')
-        @change.update(data: @data, data2: @data2)
+        @starttime = params[:change][:starttime].join(',')
+        @endtime = params[:change][:endtime].join(',')
+        @change.update(data: @data, data2: @data2, starttime: @starttime, endtime: @endtime)
 
         redirect_to @change
     end
@@ -87,5 +85,8 @@ class ChangesController < ApplicationController
         @data = @change.data.split(',')
 
         @data2 = @change.data2.split(',')
+
+        @starttime = @change.starttime.nil? ? $starttime_arr[@header.first == -1 ? 5..13 : 0..8] : @change.starttime.split(',')
+        @endtime = @change.endtime.nil? ? $endtime_arr[@header.first == -1 ? 5..13 : 0..8] : @change.endtime.split(',')
     end
 end
