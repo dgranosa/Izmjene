@@ -16,7 +16,7 @@ class ChangesController < ApplicationController
                     header: @header.to_a,
                     data: @data,
                     data2: @data2,
-                    schedule: $schedule[params[:class]][params[:shift] == 'A' ? 0 : 1][@change.date.wday][@header.first == -1 ? 6..14 : 1..9],
+                    schedule: $schedule[params[:class]][params[:shift] == 'A' ? 0 : 1][@change.date.wday - 1][@header.first == -1 ? 6..14 : 1..9],
                     starttime: @starttime,
                     endtime: @endtime,
                     updated_at: @change.updated_at.to_s
@@ -54,6 +54,39 @@ class ChangesController < ApplicationController
         @endtime = params[:change][:endtime].join(',')
         @change.update(data: @data, data2: @data2, starttime: @starttime, endtime: @endtime)
 
+        get_table
+
+        # Prof changes update
+        $prof_changes ||= Hash.new # prof_changes[name][sat] = class
+        $teachers.values.each do |prof|
+            $prof_changes[prof] ||= Array.new(15)
+        end
+
+        @data.each_with_index do |subj, i|
+            next if subj == ''
+            klass = @classes[i / 9]
+            x = (@header == -1 ? 5..13 : 0..8).to_a[i % 9]
+
+            puts klass
+            puts @shift
+            puts @date.wday
+            puts x
+            puts
+            old_subj = $schedule[klass][@shift == 'A' ? 0 : 1][@date.wday - 1][x + 1]
+            if !old_subj.nil?
+                $classessubjectsteacher[klass][old_subj].each do |prof|
+                    $prof_changes[prof][x] = 'X'
+                end
+            end
+
+
+            next if subj == 'x' || subj == 'X'
+            puts $classessubjectsteacher[klass][subj]
+            $classessubjectsteacher[klass][subj].each do |prof|
+                $prof_changes[prof][x] = subj
+            end
+        end
+
         redirect_to @change
     end
 
@@ -76,7 +109,11 @@ class ChangesController < ApplicationController
                       -1..7
                   end
 
-        @classes = if @change.shift == 'A'
+        @date = @change.date
+
+        @shift = @change.shift
+
+        @classes = if @shift == 'A'
                        Setting.classes_a.split(' ')
                    else
                        Setting.classes_b.split(' ')

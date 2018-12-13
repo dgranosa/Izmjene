@@ -11,5 +11,7 @@ Rails.application.routes.draw do
   post 'send_changes', to: 'changes#send_changes'
 
   resources :changes
+  resources :professors, only: [:index, :create]
+  get 'professors/:name', to: 'professors#show'
   resources :settings, only: [:index, :create]
 end

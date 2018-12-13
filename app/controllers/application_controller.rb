@@ -35,7 +35,8 @@ class ApplicationController < ActionController::Base
             $classes[x['id']] = x['name']
         end
 
-        $teacherclasssubjects = Hash.new # {teacher: {class: [subjects] }}
+        $teachersclassessubjects = Hash.new # {teacher: {class: [subjects] }}
+        $classessubjectsteacher = Hash.new # {teacher: {class: [subjects] }}
 
         $doc.children[0].children[27].children.each do |x|
             next if x['subjectid'].nil?
@@ -48,13 +49,16 @@ class ApplicationController < ActionController::Base
             $lessons[x['id']][4] = x['classroomids'].split(',').map { |c| $classrooms[c] }
 
             x['teacherids'].split(',').each do |t|
-                $teacherclasssubjects[$teachers[t]] ||= Hash.new
-
+                $teachersclassessubjects[$teachers[t]] ||= Hash.new
                 x['classids'].split(',').each do |c|
-                    $teacherclasssubjects[$teachers[t]][$classes[c]] ||= Array.new
-                    $teacherclasssubjects[$teachers[t]][$classes[c]].push($subjects[x['subjectid']])
+                    $teachersclassessubjects[$teachers[t]][$classes[c]] ||= Array.new
+                    $teachersclassessubjects[$teachers[t]][$classes[c]].push($subjects[x['subjectid']])
                 end
+            end
 
+            x['classids'].split(',').each do |c|
+                $classessubjectsteacher[$classes[c]] ||= Hash.new
+                $classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] ||= $lessons[x['id']][3]
             end
         end
 
