@@ -1,31 +1,15 @@
 <head>
-  <style>
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 80%;
-    }
-    
-    td, th {
-        border: 1px solid #dddddd;
-        text-align: center;
-        padding: 5px;
-    }
-    
-    input[type="text"] {
-      font-size: 15px;
-      width:50%;
-      border: none;
-      text-align: center;
-    }
-    
-    input[type="submit"] {
-      text-align: center;
-    }
-  </style>
+    <%= stylesheet_link_tag "changes" %>
+    <%= stylesheet_link_tag "common" %>
 </head>
 
 <body>
+    <ul class="MenuList">
+        <li class="MenuListItem"><a href="/">Pocetna</a></li>
+        <li class="MenuListItem"><a class="active" href="/changes">Izmjene</a></li>
+        <li class="MenuListItem"><a href="/subscriptions">Pretplata</a></li>
+        <li class="MenuListItem"><a href="/settings">Postavke</a></li>
+    </ul>
     <%= button_to "Back", changes_path, method: :get %>
     <div align="center">
         <h1>Izmjene za <%= @change.date.strftime('%d/%m/%Y') %></h1>

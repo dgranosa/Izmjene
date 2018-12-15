@@ -1,0 +1,43 @@
+/* Top Horizontal Menu */
+* {
+  font-family: Arial;
+}
+
+body {
+  margin: 0;
+}
+
+ul.MenuList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #36304a;
+}
+
+li.MenuListItem {
+  float: left;
+}
+
+li.MenuListItem a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li.MenuListItem a:hover {
+  background-color: #111;
+  transition-duration: 0.4s;
+}
+
+li a:hover:not(.MenuListItem.active) {
+  background-color: #111;
+}
+
+li.MenuListItem a.active {
+  background-color: #4CAF50;
+}
+
+/*************************************/

@@ -1,0 +1,33 @@
+table {
+  font-family: Arial, sans-serif;
+  border-collapse: collapse;
+  width: 80%;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+tr:nth-child(even) input{background-color: #f2f2f2;}
+
+td, th {
+  border: 1px solid #36304a;
+  text-align: center;
+  padding: 5px;
+}
+
+th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+  background-color: #36304a;
+  color: white;
+}
+
+input[type="text"] {
+  font-size: 15px;
+  width:50%;
+  border: none;
+  text-align: center;
+}
+
+input[type="submit"] {
+text-align: center;
+}

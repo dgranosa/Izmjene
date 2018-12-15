@@ -1,0 +1,40 @@
+* {
+  font-family: Arial;
+}
+
+#menu {
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -150px;
+  border: 5px black;
+}
+
+ul {
+  width: 70%;
+  margin: auto;
+  border: 2px solid #000;
+  border-radius: 2px;
+  align-content:center;
+  list-style-type: none;
+  padding: 10px;
+}
+
+li a {
+  border-radius: 2px;
+  margin: 5px;
+  text-align:center;
+  display: block;
+  color: #000;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color on hover */
+li a:hover {
+  transition-duration: 0.4s;
+  background-color: #000;
+  color: white;
+}
