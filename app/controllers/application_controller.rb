@@ -36,8 +36,10 @@ class ApplicationController < ActionController::Base
 
                 old_subj = $schedule[klass][@shift == 'A' ? 0 : 1][date.wday - 1][x + 1]
                 if !old_subj.nil?
-                    $classessubjectsteacher[klass][old_subj].each do |prof|
-                        $prof_changes[date][prof][x] = 'X' if $prof_changes[date][prof][x].nil?
+                    old_subj.split('|').each do |sub|
+                        $classessubjectsteacher[klass][sub].each do |prof|
+                            $prof_changes[date][prof][x] = 'X' if $prof_changes[date][prof][x].nil?
+                        end
                     end
                 end
 
@@ -130,7 +132,7 @@ class ApplicationController < ActionController::Base
                 $schedule[c][x['weeks'].index('1')] ||= Array.new(5)
                 $schedule[c][x['weeks'].index('1')][x['days'].index('1')] ||= Array.new(15)
                 $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] ||= ''
-                $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] += '/' if $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] != ''
+                $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] += '|' if $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] != ''
                 $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] += less[1]
             end
 
