@@ -1,4 +1,55 @@
 class ApplicationController < ActionController::Base
+    def update_prof_changes(date)
+        $prof_changes ||= Hash.new # prof_changes[date][name][sat] = class
+
+        if $prof_changes.length > 1000
+            $prof_changes.reject! { |k| k < Date.today - 2.day }
+        end
+
+        $prof_changes[date] ||= Hash.new
+        $teachers.values.each do |prof|
+            $prof_changes[date][prof] = Array.new(15)
+        end
+
+        Change.where(date: date).each do |change|
+            change.data.split(',').each_with_index do |subj, i|
+                next if subj == ''
+                klass = if change.shift == 'A'
+                            Setting.classes_a.split(' ')
+                        else
+                            Setting.classes_b.split(' ')
+                        end
+                klass = klass[i / 9]
+
+                x = if (change.date.cweek + (change.shift == 'A' ? 0 : 1)) % 2 == Setting.shift_bit
+                        0..8
+                    else
+                        5..13
+                    end
+                x = x.to_a[i % 9]
+
+                puts klass
+                puts change.shift
+                puts date.wday
+                puts x
+                puts
+
+                old_subj = $schedule[klass][@shift == 'A' ? 0 : 1][date.wday - 1][x + 1]
+                if !old_subj.nil?
+                    $classessubjectsteacher[klass][old_subj].each do |prof|
+                        $prof_changes[date][prof][x] = 'X' if $prof_changes[date][prof][x].nil?
+                    end
+                end
+
+                next if subj == 'x' || subj == 'X'
+                puts $classessubjectsteacher[klass][subj]
+                $classessubjectsteacher[klass][subj].each do |prof|
+                    $prof_changes[date][prof][x] = klass + ' (' + subj + ')'
+                end
+            end
+        end
+    end
+
     def parse_schedule
         return $doc if !$doc.nil?
 
@@ -24,7 +75,11 @@ class ApplicationController < ActionController::Base
         end
 
         $doc.children[0].children[13].children.each do |x|
-            $teachers[x['id']] = x['short']
+            $teachers[x['id']] = x['short'].to_s
+                                           .gsub('è', 'č')
+                                           .gsub('È', 'Č')
+                                           .gsub('æ', 'ć')
+                                           .gsub('Æ', 'Ć')
         end
 
         $doc.children[0].children[15].children.each do |x|

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get 'subscriptions', to: 'subscriptions#index'
   post 'subscriptions', to: 'subscriptions#create'
-  get 'subscriptions/delete/:email', to: 'subscriptions#delete'
+  get 'subscriptions/delete', to: 'subscriptions#delete'
 
   post 'send_changes', to: 'changes#send_changes'
 
