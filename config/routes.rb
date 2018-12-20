@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'sessions/new'
   root 'main#index'
   get 'changes_input/index'
   get 'changes_view/index'
@@ -14,4 +15,8 @@ Rails.application.routes.draw do
   resources :professors, only: [:index, :create]
   get 'professors/:name', to: 'professors#show'
   resources :settings, only: [:index, :create]
+
+  get '/login', to: 'sessions#new'
+  post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
 end

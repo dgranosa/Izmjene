@@ -2,9 +2,16 @@
   <%= stylesheet_link_tag "main" %>
 </head>
 <body>
+  
   <div id="menu">
     <ul>
       <li><a href="/changes">Izmjene</a></li>
+      <% if !logged_in %>
+        <li><a href="/login">Prijava</a></li>
+      <% else %>
+        <%= current_user.last_name %>
+        <li><a href="/login">Odjava</a></li>
+      <% end %>
       <li><a href="/subscriptions">Pretplata</a></li>
       <li><a href="/settings">Postavke</a></li>
     </ul>

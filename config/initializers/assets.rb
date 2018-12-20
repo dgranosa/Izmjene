@@ -13,6 +13,7 @@ Rails.application.config.assets.precompile += %w( changes.css )
 Rails.application.config.assets.precompile += %w( settings.css )
 Rails.application.config.assets.precompile += %w( subscriptions.css )
 Rails.application.config.assets.precompile += %w( common.css )
+Rails.application.config.assets.precompile += %w( sessions.css )
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
