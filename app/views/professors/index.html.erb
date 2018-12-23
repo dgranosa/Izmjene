@@ -1,0 +1,26 @@
+<head>
+        <%= stylesheet_link_tag "common" %>
+</head>
+
+<body>
+<ul class="MenuList">
+        <li class="MenuListItem"><a href="/">Pocetna</a></li>
+        <li class="MenuListItem"><a href="/changes">Izmjene za ucenike</a></li>
+        <li class="MenuListItem"><a class="active" href="/professors">Izmjene za profesore</a></li>
+        <li class="MenuListItem"><a href="/subscriptions">Pretplata</a></li>
+        <li class="MenuListItem"><a href="/settings">Postavke</a></li>
+</ul>
+<div align="center">
+        <%= form_with url: "/professors", method: 'post'  do |f|  %>
+        <p>
+                <%= f.label :datum %><br/>
+                <%= f.date_field :date, value: Date.current + 1.day %>
+        </p>
+        <p>
+                <%= f.label :Ime %><br/>
+                <%= f.text_field :name%>
+        </p>
+        <%= f.submit "Find" %>
+        <% end %>
+</div>
+</body>

@@ -13,10 +13,12 @@ Rails.application.routes.draw do
 
   resources :changes
   resources :professors, only: [:index, :create]
+  
   get 'professors/:name', to: 'professors#show'
+
   resources :settings, only: [:index, :create]
 
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
-  delete '/logout', to: 'sessions#destroy'
+  get '/logout', to: 'sessions#destroy'
 end

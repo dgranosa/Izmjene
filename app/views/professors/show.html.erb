@@ -1,0 +1,38 @@
+<head>
+        <%= stylesheet_link_tag "changes" %>
+        <%= stylesheet_link_tag "common" %>
+</head>
+
+<body>
+        <ul class="MenuList">
+                <li class="MenuListItem"><a href="/">Pocetna</a></li>
+                <li class="MenuListItem"><a href="/changes">Izmjene za ucenike</a></li>
+                <li class="MenuListItem"><a class="active" href="/professors">Izmjene za profesore</a></li>
+                <li class="MenuListItem"><a href="/subscriptions">Pretplata</a></li>
+                <li class="MenuListItem"><a href="/settings">Postavke</a></li>
+        </ul>
+        <%= button_to "Back", changes_path, method: :get %>
+        <div align="center">
+                <h1>Izmjene za <%= @date.strftime('%d/%m/%Y') %> - <%= @name %></h1>
+                <table>
+                <tr>
+                        <th></th>
+                        <% for i in 0..13 %>
+                        <th>
+                                <%= Time.parse(@starttime[i]).strftime("%R") %>
+                                -
+                                <%= Time.parse(@endtime[i]).strftime("%R") %>
+                        </th>
+                        <% end %>
+                </tr>
+                <tr>
+                        <th><%= @name%></th>
+                        <% for i in 0..13 %>
+                                <td>
+                                        <%= @change[i] %>
+                                </td>
+                        <% end %>
+                </tr>
+                </table>
+        </div>
+</body>

@@ -79,7 +79,6 @@ class ChangesController < ApplicationController
                   end
 
         @date = @change.date
-
         @shift = @change.shift
 
         @classes = if @shift == 'A'
