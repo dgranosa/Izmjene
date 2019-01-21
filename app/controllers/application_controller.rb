@@ -29,12 +29,6 @@ class ApplicationController < ActionController::Base
                     end
                 x = x.to_a[i % 9]
 
-                puts klass
-                puts change.shift
-                puts date.wday
-                puts x
-                puts
-
                 old_subj = $schedule[klass][@shift == 'A' ? 0 : 1][date.wday - 1][x + 1]
                 if !old_subj.nil?
                     old_subj.split('|').each do |sub|
@@ -45,7 +39,6 @@ class ApplicationController < ActionController::Base
                 end
 
                 next if subj == 'x' || subj == 'X'
-                puts $classessubjectsteacher[klass][subj]
                 $classessubjectsteacher[klass][subj].each do |prof|
                     $prof_changes[date][prof][x] = klass + ' (' + subj + ')'
                 end
