@@ -11,8 +11,6 @@ class ChangesController < ApplicationController
                 get_table
                 i = @classes.find_index(params[:class]) * 9
                 @data = @data[i..(i+8)]
-                
-		binding.pry
 
                 render json: {
                     header: @header.to_a,
