@@ -36,10 +36,8 @@ class ProfessorsController < ApplicationController
         @date = Date.parse(params[:date])
         @name = params[:name]
 
-        update_prof_changes(@date) if $prof_changes.nil? || $prof_changes[@date].nil?
-
+        update_prof_changes(@date) #if $prof_changes.nil? || $prof_changes[@date].nil?
         @change = $prof_changes[@date][@name]
-
 
         @starttime = @changeA.starttime.nil? ? $starttime_arr: @changeA.starttime.split(',')
         @endtime = @changeA.endtime.nil? ? $endtime_arr : @changeA.endtime.split(',')
