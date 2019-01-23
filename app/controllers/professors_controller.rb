@@ -45,7 +45,7 @@ class ProfessorsController < ApplicationController
 	@data2 = @changeA.data2.split(',')
 	@data2 += @changeB.data2.split(',')
 
-        @starttime = @changeA.starttime.nil? ? $starttime_arr: @changeA.starttime.split(',')
-        @endtime = @changeA.endtime.nil? ? $endtime_arr : @changeA.endtime.split(',')
+	@starttime = @changeA.starttime.nil? ? $starttime_arr : @changeA.starttime.split(',') + @changeB.starttime.split(',')[4..8]
+	@endtime = @changeA.endtime.nil? ? $endtime_arr : @changeA.endtime.split(',') + @changeB.endtime.split(',')[4..8]
     end
 end

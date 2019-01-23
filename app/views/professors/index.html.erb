@@ -18,7 +18,13 @@
         </p>
         <p>
                 <%= f.label :Ime %><br/>
-                <%= f.text_field :name%>
+		<%= f.text_field :name, autocomplete: :off, list: 'name-list' %>
+		<datalist id="name-list">
+			<% $teachers.values.each do |prof| %>
+				<% next if prof.length == 0 %>
+				<option value="<%= prof %>" />
+			<% end %>
+		</datalist>
         </p>
         <%= f.submit "Find" %>
         <% end %>
