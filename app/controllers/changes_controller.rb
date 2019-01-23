@@ -1,5 +1,6 @@
 class ChangesController < ApplicationController
     before_action :parse_schedule
+    before_action :authentication, only: [:edit, :update, :send_changes]
 
     def index
         if params[:date]

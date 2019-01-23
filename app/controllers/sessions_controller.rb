@@ -1,20 +1,23 @@
 class SessionsController < ApplicationController
-  def new
-  end
+    before_action :authentication, only: [:destroy]
 
-  def create 
-    user = User.find_by(first_name: params[:session][:first_name], last_name: params[:session][:last_name])
-    if !user.nil? && user.password == params[:session][:password]
-      log_in user
-      redirect_to '/'
-    else
-      flash[:message] = 'Invalid email/password combination'
-      render "new"
+    def index
     end
-  end
 
-  def destroy
-    log_out
-    redirect_to '/'
-  end
+    def create
+        user = User.find_by(username: params[:session][:username])
+
+        if user&.authenticate(params[:session][:password])
+            cookies[:token] = user.token
+        end
+
+        redirect_to '/'
+    end
+
+    def destroy
+        current_user.regenerate_token if logged_in
+        cookies.delete(:token)
+
+        redirect_to '/'
+    end
 end

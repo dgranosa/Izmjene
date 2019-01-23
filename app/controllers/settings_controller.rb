@@ -1,4 +1,7 @@
 class SettingsController < ApplicationController
+    before_action :authentication
+    before_action :authorization
+
     def index
         @shift_bit = Setting.shift_bit.to_i
         @classes_a = Setting.classes_a
@@ -15,5 +18,13 @@ class SettingsController < ApplicationController
         Setting.classes_b = @classes_b
         
         render 'index'
+    end
+
+    private
+
+    def authorization
+        return if current_user.role == 'admin'
+
+        redirect_to '/'
     end
 end

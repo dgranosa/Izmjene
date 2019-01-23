@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
     include SessionsHelper
+
     def update_prof_changes(date)
         $prof_changes ||= Hash.new # prof_changes[date][name][sat] = class
 

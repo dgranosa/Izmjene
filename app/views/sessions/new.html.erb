@@ -5,11 +5,8 @@
 <body>
   <%= form_for(:session, url: login_path) do |f| %>
       <div class="container">
-          <%= f.label :ime %>
-          <%= f.text_field :first_name %>
-          <br/>
-          <%= f.label :prezime %>
-          <%= f.text_field :last_name %>
+          <%= f.label :username %>
+          <%= f.text_field :username %>
           <br/>
           <%= f.label :lozinka %>
           <%= f.password_field :password %>
