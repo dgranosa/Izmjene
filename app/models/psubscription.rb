@@ -1,0 +1,2 @@
+class Psubscription < ApplicationRecord
+end

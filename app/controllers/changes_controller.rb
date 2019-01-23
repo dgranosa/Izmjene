@@ -61,11 +61,19 @@ class ChangesController < ApplicationController
 
     def send_changes
         hash = Hash[params[:classes].zip(params[:data].each_slice(9).to_a)]
-        subscriptions = Subscription.where(shift: params[:shift])
         domain = request.host + ':' + request.port.to_s
 
-        subscriptions.each do |sub|
-            ChangeMailer.send_email(sub.email, params[:date], params[:header], sub.klass, hash[sub.klass], domain).deliver
+        Subscription.select("string_agg(email, ',') as emails, klass").group(:klass).each do |sub|
+            emails = sub.emails.split(',')
+
+            ChangeMailer.send_students_email(emails, params[:date], params[:header], sub.klass, hash[sub.klass], domain).deliver
+        end
+
+        date = Date.parse(params[:date])
+        update_prof_changes(date)
+
+        Psubscription.all.each do |sub|
+            ChangeMailer.send_professor_email(sub.email, sub.name, params[:date], $prof_changes[date][sub.name], domain).deliver
         end
     end
 

@@ -12,7 +12,9 @@
         <li class="MenuListItem"><a href="/settings">Postavke</a></li>
     </ul>
     <div align="center">
+        <h2>Za ucenike</h2>
         <%= form_with url: "/subscriptions", method: 'post'  do |f|  %>
+            <%= f.hidden_field :type, value: 'student' %>
             <p>
                 <%= f.label :email %><br/>
                 <%= f.text_field :email %>
@@ -24,6 +26,22 @@
             <p>
                 <%= f.label :shift %><br/>
                 <%= f.text_field :shift %>
+            </p>
+            <%= f.submit "Subscribe" %>
+        <% end %>
+    </div>
+    </br>
+    <div align="center">
+        <h2>Za profesore</h2>
+        <%= form_with url: "/subscriptions", method: 'post'  do |f|  %>
+            <%= f.hidden_field :type, value: 'professor' %>
+            <p>
+                <%= f.label :Ime_i_prezime %><br/>
+                <%= f.text_field :name %>
+            </p>
+            <p>
+                <%= f.label :email %><br/>
+                <%= f.text_field :email; %>
             </p>
             <%= f.submit "Subscribe" %>
         <% end %>

@@ -3,9 +3,14 @@ class SubscriptionsController < ApplicationController
     end
 
     def create
-        subscription = Subscription.new(email: params[:email],
-                                        klass: params[:class],
-                                        shift: params[:shift])
+        subscription = if params[:type] == 'student'
+            Subscription.new(email: params[:email],
+                             klass: params[:class],
+                             shift: params[:shift])
+        else
+            Psubscription.new(name: params[:name],
+                              email: params[:email])
+        end
 
         subscription.save
 
