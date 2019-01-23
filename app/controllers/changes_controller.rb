@@ -63,10 +63,12 @@ class ChangesController < ApplicationController
         hash = Hash[params[:classes].zip(params[:data].each_slice(9).to_a)]
         domain = request.host + ':' + request.port.to_s
 
+        classtime = params[:starttime].zip(params[:endtime]).map{ |x| x.join('-') }
+
         Subscription.select("string_agg(email, ',') as emails, klass").group(:klass).each do |sub|
             emails = sub.emails.split(',')
 
-            ChangeMailer.send_students_email(emails, params[:date], params[:header], sub.klass, hash[sub.klass], domain).deliver
+            ChangeMailer.send_students_email(emails, params[:date], params[:header], sub.klass, hash[sub.klass], classtime, domain).deliver
         end
 
         date = Date.parse(params[:date])

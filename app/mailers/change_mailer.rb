@@ -1,12 +1,13 @@
 class ChangeMailer < ApplicationMailer
     default from: 'izmjene.tsrb@gmail.com'
 
-    def send_students_email(email, date, header, klass, data, domain)
+    def send_students_email(email, date, header, klass, data, classtime, domain)
         @email = email
         @date = date
         @header = header
         @klass = klass
         @data = data
+        @classtime = classtime
         @domain = domain
 
         mail(bcc: @email, subject: 'Izmjene za ' + date)

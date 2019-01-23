@@ -38,6 +38,11 @@
       <h1 align = "center">Izmjene za <%= @klass %>, <%= @date %></h1>
       <table align = "center">
           <tr>
+              <% @classtime.each do |x| %>
+                  <td><%= x %></td>
+              <% end %>
+          </tr>
+          <tr>
               <% @header.each do |x| %>
                   <th><%= x %></th>
               <% end %>
