@@ -9,10 +9,14 @@ class ProfessorsController < ApplicationController
         elsif params[:name]
             d = Date.parse(params[:date])
             update_prof_changes(d) if $prof_changes.nil? || $prof_changes[d].nil?
+	    show
             render json: {
                 name: params[:name],
                 changes: $prof_changes[d][params[:name]],
-                schedule: $teacher_schedule[params[:name]][d.cweek % 2 == Setting.shift_bit ? 0 : 1][d.wday - 1]
+		schedule: $teacher_schedule[params[:name]][d.cweek % 2 == Setting.shift_bit ? 0 : 1][d.wday - 1],
+		starttime: @starttime,
+		endtime: @endtime,
+		data2: @data2
             }
         end
     end
@@ -38,6 +42,8 @@ class ProfessorsController < ApplicationController
 
         update_prof_changes(@date) #if $prof_changes.nil? || $prof_changes[@date].nil?
         @change = $prof_changes[@date][@name]
+	@data2 = @changeA.data2.split(',')
+	@data2 += @changeB.data2.split(',')
 
         @starttime = @changeA.starttime.nil? ? $starttime_arr: @changeA.starttime.split(',')
         @endtime = @changeA.endtime.nil? ? $endtime_arr : @changeA.endtime.split(',')
