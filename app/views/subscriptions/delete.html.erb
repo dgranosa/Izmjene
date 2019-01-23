@@ -1,0 +1,24 @@
+<head>
+    <%= stylesheet_link_tag "subscriptions" %>
+    <%= stylesheet_link_tag "common" %>
+</head>
+
+<body>
+    <ul class="MenuList">
+        <li class="MenuListItem"><a href="/">Pocetna</a></li>
+        <li class="MenuListItem"><a href="/changes">Izmjene za ucenike</a></li>
+        <li class="MenuListItem"><a href="/professors">Izmjene za profesore</a></li>
+        <li class="MenuListItem"><a class="active" href="/subscriptions">Pretplata</a></li>
+        <li class="MenuListItem"><a href="/settings">Postavke</a></li>
+    </ul>
+    <div align="center">
+        <h2>Unsubscribe</h2>
+        <%= form_with url: "/subscriptions/delete", method: 'get'  do |f|  %>
+            <p>
+                <%= f.label :email %><br/>
+                <%= f.text_field :email %>
+            </p>
+            <%= f.submit "Unsubscribe" %>
+        <% end %>
+    </div>
+</body>

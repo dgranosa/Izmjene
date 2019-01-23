@@ -18,10 +18,19 @@ class SubscriptionsController < ApplicationController
     end
 
     def delete
+        if params[:email].nil?
+            render 'delete'
+            return
+        end
+
         subscription = Subscription.find_by(email: params[:email])
-        if subscription.nil?
+        psubscription = Psubscription.find_by(email: params[:email])
+
+        if subscription.nil? && psubscription.nil?
             render html: 'Not found'
-        elsif subscription.destroy
+        elsif !subscription.nil? && subscription.destroy
+            render 'index'
+        elsif !psubscription.nil? && psubscription.destroy
             render 'index'
         else
             render html: 'Unsuccessful'
