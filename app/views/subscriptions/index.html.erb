@@ -37,7 +37,13 @@
             <%= f.hidden_field :type, value: 'professor' %>
             <p>
                 <%= f.label :Ime_i_prezime %><br/>
-                <%= f.text_field :name %>
+                <%= f.text_field :name, autocomplete: :off, list: 'name-list' %>
+                <datalist id="name-list">
+                    <% $teachers.values.each do |prof| %>
+                        <% next if prof.length == 0 %>
+                        <option value="<%= prof %>" />
+                    <% end %>
+                </datalist>
             </p>
             <p>
                 <%= f.label :email %><br/>

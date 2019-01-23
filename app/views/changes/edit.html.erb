@@ -37,7 +37,7 @@
                         <th><%= x %></th>
                         <% for i in 0..8 %>
                             <td>
-                                <%= f.text_field :data, multiple: true, value: @data[counter * 9 + i].to_s %>
+                                <%= f.text_field :data, multiple: true, value: @data[counter * 9 + i].to_s, autocomplete: :off, list: 'subject-list' %>
                             </td>
                         <% end %>
                     </tr>
@@ -59,7 +59,7 @@
                     <tr>
                         <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 0] %></td>
                         <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 1] %></td>
-                        <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 2] %></td>
+                        <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 2], autocomplete: :off, list: 'subject-list' %></td>
                         <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 3] %></td>
                         <td><input type="button" value="-" onclick="$(this).closest('tr').remove()" /></td>
                     </tr>
@@ -69,7 +69,12 @@
             <%= f.submit "Save changes" %>
         <% end %>
     </div>
+    <datalist id="subject-list">
+        <% $subjects.values.each do |subj| %>
+            <option value="<%= subj.titleize %>" />
+        <% end %>
+    </datalist>
 </body>
     <script>
-        x = "<tr><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input type=\"button\" value=\"-\" onclick=\"$(this).closest('tr').remove()\"></td></tr>"
+        x = "<tr><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" autocomplete=\"off\" list=\"subject-list\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input type=\"button\" value=\"-\" onclick=\"$(this).closest('tr').remove()\"></td></tr>"
     </script>
