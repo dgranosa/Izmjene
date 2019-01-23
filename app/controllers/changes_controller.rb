@@ -5,23 +5,21 @@ class ChangesController < ApplicationController
         if params[:date]
             @change = Change.where(shift: params[:shift], date: params[:date]).first
 
-            if !@change
-                render plain: 'Not found'
-            else
-                get_table
-                i = @classes.find_index(params[:class]) * 9
-                @data = @data[i..(i+8)]
+            @change = Change.create(shift: params[:shift], date: params[:date], data: '', data2: '') if !@change
 
-                render json: {
-                    header: @header.to_a,
-                    data: @data,
-                    data2: @data2,
-                    schedule: $schedule[params[:class]][params[:shift] == 'A' ? 1 : 0][@change.date.wday - 1][@header.first == -1 ? 6..14 : 1..9],
-                    starttime: @starttime,
-                    endtime: @endtime,
-                    updated_at: @change.updated_at.to_s
-                }
-            end
+            get_table
+            i = @classes.find_index(params[:class]) * 9
+            @data = @data[i..(i+8)]
+
+            render json: {
+                header: @header.to_a,
+                data: @data,
+                data2: @data2,
+                schedule: $schedule[params[:class]][params[:shift] == 'A' ? 1 : 0][@change.date.wday - 1][@header.first == -1 ? 6..14 : 1..9],
+                starttime: @starttime,
+                endtime: @endtime,
+                updated_at: @change.updated_at.to_s
+            }
         end
     end
 
