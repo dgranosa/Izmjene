@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
                             Setting.classes_b.split(' ')
                         end
                 klass = klass[i / 9]
-                subj = subj.downcase
+                subj = subj.titleize
 
                 x = if (change.date.cweek + (change.shift == 'A' ? 0 : 1)) % 2 == Setting.shift_bit
                         0..8
@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
 
 
         $doc.children[0].children[11].children.each do |x|
-            $subjects[x['id']] = x['short'].downcase if !x['short'].nil?
+            $subjects[x['id']] = x['short'].titleize if !x['short'].nil?
         end
 
         $doc.children[0].children[13].children.each do |x|

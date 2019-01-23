@@ -46,7 +46,7 @@ class ChangesController < ApplicationController
     def update
         @change = Change.find(params[:id])
 
-        @data = params[:change][:data].join(',')
+        @data = params[:change][:data].map{ |x| x.titleize }.join(',')
         @data2 = params[:change][:data2].to_a.join(',')
         @starttime = params[:change][:starttime].join(',')
         @endtime = params[:change][:endtime].join(',')
