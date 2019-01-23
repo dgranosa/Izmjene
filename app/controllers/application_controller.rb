@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
                     end
                 end
 
-                next if subj == 'x'
+                next if subj == 'x' || $classessubjectsteacher[klass][subj].nil?
 
                 $classessubjectsteacher[klass][subj].each do |prof|
                     $prof_changes[date][prof][x] = klass + ' (' + subj + ')'
