@@ -19,10 +19,8 @@
                         <th></th>
                         <% for i in 0..13 %>
 				<th>
-                                <%= Time.parse(@starttime[i]).strftime("%R") %>
-                                -
-                                <%= Time.parse(@endtime[i]).strftime("%R") %>
-                        </th>
+					<%= Time.parse(@starttime[i]).strftime("%R") %> - <%= Time.parse(@endtime[i]).strftime("%R") %>
+				</th>
                         <% end %>
                 </tr>
 			<tr>

@@ -11,12 +11,13 @@ class ChangesController < ApplicationController
             get_table
             i = @classes.find_index(params[:class]) * 9
             @data = @data[i..(i+8)]
+	    x = ((@header.first == -1 ? 1 : 0) + (params[:shift] == 'A' ? 0 : 1)) % 2
 
             render json: {
                 header: @header.to_a,
                 data: @data,
                 data2: @data2,
-                schedule: @change.date.wday.between?(1, 5) ? $schedule[params[:class]][params[:shift] == 'A' ? 1 : 0][@change.date.wday - 1][@header.first == -1 ? 6..14 : 1..9] : nil,
+                schedule: @change.date.wday.between?(1, 5) ? $schedule[params[:class]][x][@change.date.wday - 1][@header.first == -1 ? 6..14 : 1..9] : nil,
                 starttime: @starttime,
                 endtime: @endtime,
                 updated_at: @change.updated_at.to_s

@@ -14,11 +14,11 @@ class ProfessorsController < ApplicationController
                 
             render json: {
                 name: params[:name],
-                changes: $prof_changes[d][params[:name]],
+                data: $prof_changes[d][params[:name]],
                 schedule: $teacher_schedule[params[:name]][d.cweek % 2 == Setting.shift_bit ? 0 : 1][d.wday - 1],
                 starttime: @starttime,
                 endtime: @endtime,
-                data2: @data2
+		data2: @data2 
             }
         end
     end
