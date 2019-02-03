@@ -1,5 +1,4 @@
 class ChangesController < ApplicationController
-    before_action :parse_schedule
     before_action :authentication, only: [:edit, :update, :send_changes]
 
     def index
@@ -10,12 +9,12 @@ class ChangesController < ApplicationController
 
             get_table
             i = @classes.find_index(params[:class]) * 9
-            @data = @data[i..(i+8)]
+            rdata = @data[i..(i+8)]
 	    x = ((@header.first == -1 ? 1 : 0) + (params[:shift] == 'A' ? 0 : 1)) % 2
 
             render json: {
                 header: @header.to_a,
-                data: @data,
+                data: rdata,
                 data2: @data2,
                 schedule: @change.date.wday.between?(1, 5) ? $schedule[params[:class]][x][@change.date.wday - 1][@header.first == -1 ? 6..14 : 1..9] : nil,
                 starttime: @starttime,

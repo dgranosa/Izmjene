@@ -18,7 +18,15 @@ class ChangeMailer < ApplicationMailer
         @name = name
         @date = date
         @data = data
+		@domain = domain
 
         mail(to: @email, subject: 'Izmjene za ' + date)
     end
+
+    def send_email_confirmation(email, url)
+		@email = email
+		@url = url
+
+		mail(to: @email, subject: 'Potvrda pretplate na Izmjenko')
+	end
 end

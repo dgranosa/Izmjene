@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'subscriptions', to: 'subscriptions#index'
   post 'subscriptions', to: 'subscriptions#create'
   get 'subscriptions/delete', to: 'subscriptions#delete'
+  get 'subscriptions/confirm', to: 'subscriptions#confirm'
 
   post 'send_changes', to: 'changes#send_changes'
 

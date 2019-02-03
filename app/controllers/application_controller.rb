@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
     include SessionsHelper
+    before_action :parse_schedule
 
     def update_prof_changes(date)
         $prof_changes ||= Hash.new # prof_changes[date][name][sat] = class
@@ -24,14 +25,16 @@ class ApplicationController < ActionController::Base
                 klass = klass[i / 9]
                 subj = subj.titleize
 
-                x = if (change.date.cweek + (change.shift == 'A' ? 0 : 1)) % 2 == Setting.shift_bit
-                        0..8
-                    else
-                        5..13
-                    end
+                if (change.date.cweek + (change.shift == 'A' ? 0 : 1)) % 2 == Setting.shift_bit
+			x = 0..8
+			y = 1
+		else
+			x = 5..13
+			y = 0
+		end
                 x = x.to_a[i % 9]
 
-                old_subj = $schedule[klass][@shift == 'A' ? 1 : 0][date.wday - 1][x + 1]
+                old_subj = $schedule[klass][y][date.wday - 1][x + 1]
                 if !old_subj.nil?
                     old_subj.split('|').each do |sub|
                         $classessubjectsteacher[klass][sub].each do |prof|
@@ -40,7 +43,7 @@ class ApplicationController < ActionController::Base
                     end
                 end
 
-                next if subj == 'x' || $classessubjectsteacher[klass][subj].nil?
+                next if subj == 'X' || $classessubjectsteacher[klass][subj].nil?
 
                 $classessubjectsteacher[klass][subj].each do |prof|
                     $prof_changes[date][prof][x] = klass + ' (' + subj + ')'
@@ -50,7 +53,7 @@ class ApplicationController < ActionController::Base
     end
 
     def parse_schedule
-        return $doc if !$doc.nil?
+        return $doc unless $doc.nil?
 
         $doc = File.open('gogi.xml') { |f| Nokogiri::XML(f) }
 
@@ -70,7 +73,13 @@ class ApplicationController < ActionController::Base
 
 
         $doc.children[0].children[11].children.each do |x|
-            $subjects[x['id']] = x['short'].titleize if !x['short'].nil?
+			next if x['short'].nil?
+			$subjects[x['id']] = x['short'].to_s
+                                           .gsub('è', 'č')
+                                           .gsub('È', 'Č')
+                                           .gsub('æ', 'ć')
+                                           .gsub('Æ', 'Ć')
+					   .titleize
         end
 
         $doc.children[0].children[13].children.each do |x|
@@ -137,7 +146,7 @@ class ApplicationController < ActionController::Base
                 $teacher_schedule[t] ||= Array.new(2)
                 $teacher_schedule[t][x['weeks'].index('1')] ||= Array.new(5)
                 $teacher_schedule[t][x['weeks'].index('1')][x['days'].index('1')] ||= Array.new(15)
-                $teacher_schedule[t][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] = less[0][0]
+		$teacher_schedule[t][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] = less[0].join('|') + ' (' + less[1] + ')'
             end
         end
     end
