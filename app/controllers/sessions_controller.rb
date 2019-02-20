@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     def index
     end
 
-    def create
+    def create # Creates new session / login
         user = User.find_by(username: params[:session][:username])
 
         if user&.authenticate(params[:session][:password])
@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
         redirect_to '/'
     end
 
-    def destroy
+    def destroy # Destroys the session / logout
         current_user.regenerate_token if logged_in
         cookies.delete(:token)
 

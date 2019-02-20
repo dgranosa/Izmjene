@@ -1,8 +1,8 @@
 class SubscriptionsController < ApplicationController
-    def index
+    def index # Displays form for entering email subscription
     end
 
-    def create
+    def create # Send email confirmation mail
 		$email_confirmation ||= Hash.new
 
 		token = $email_confirmation.select { |k, v| v[:email] == params[:email] }.keys[0]
@@ -25,7 +25,7 @@ class SubscriptionsController < ApplicationController
         render html: 'Confirmation mail has been send to ' + params[:email]
     end
 
-    def delete
+    def delete # Deletes email from database from given parametar email
         if params[:email].nil?
             render 'delete'
             return
@@ -45,7 +45,7 @@ class SubscriptionsController < ApplicationController
         end
     end
     
-    def confirm
+    def confirm # Confirms 
 		if params[:token].nil?
 			redirect_to action: :index
 			return

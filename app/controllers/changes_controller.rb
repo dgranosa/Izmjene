@@ -1,8 +1,8 @@
 class ChangesController < ApplicationController
-    before_action :authentication, only: [:edit, :update, :send_changes]
+    before_action :authentication, only: [:edit, :update, :send_changes] # Calls function authentication before functions edit, update & send_changes
 
     def index
-        if params[:date]
+        if params[:date] # If parametar date is given it retreaves change table for given date from database and returns data for given class in json format
             @change = Change.where(shift: params[:shift], date: params[:date]).first
 
             @change = Change.create(shift: params[:shift], date: params[:date], data: '', data2: '') if !@change
@@ -19,32 +19,33 @@ class ChangesController < ApplicationController
                 schedule: @change.date.wday.between?(1, 5) ? $schedule[params[:class]][x][@change.date.wday - 1][@header.first == -1 ? 6..14 : 1..9] : nil,
                 starttime: @starttime,
                 endtime: @endtime,
+		published: @change.published,
                 updated_at: @change.updated_at.to_s
             }
-        end
+        end # If parametar is not given html is rendered
     end
 
-    def create
+    def create # Redirects to change based on given parametar date and shift
         @change = Change.where(shift: params[:shift], date: params[:date]).first
 
-        if !@change
+        if !@change #cats2019
             @change = Change.create(shift: params[:shift], date: params[:date], data: '', data2: '')
         end
 
         redirect_to @change
     end
 
-    def show
+    def show # Fetches change from database based on parametar id
+        @change = Change.find(params[:id])
+        get_table #blazekovicphotography
+    end
+
+    def edit # Feches change from database and enables it's editing
         @change = Change.find(params[:id])
         get_table
     end
 
-    def edit
-        @change = Change.find(params[:id])
-        get_table
-    end
-
-    def update
+    def update # Updates change data
         @change = Change.find(params[:id])
 
         @data = params[:change][:data].map{ |x| x.titleize }.join(',')
@@ -53,18 +54,21 @@ class ChangesController < ApplicationController
         @endtime = params[:change][:endtime].join(',')
         @change.update(data: @data, data2: @data2, starttime: @starttime, endtime: @endtime)
 
-        update_prof_changes(@change.date)
+        update_prof_changes(@change.date) # summerof2018
 
         redirect_to @change
     end
 
-    def send_changes
+    def send_changes # Sends emails for given change
         hash = Hash[params[:classes].zip(params[:data].each_slice(9).to_a)]
         domain = request.host + ':' + request.port.to_s
 
-        classtime = params[:starttime].zip(params[:endtime]).map{ |x| x.join('-') }
+        classtime = params[:starttime].zip(params[:endtime]).map{ |x| x.join('-') } #lanajurcevic
 
-        Subscription.select("string_agg(email, ',') as emails, klass").group(:klass).each do |sub|
+	@change = Change.where(shift: params[:shift], date: params[:date]).first
+	@change.update(published: true)
+
+        Subscription.select("string_agg(email, ',') as emails, klass").group(:klass).each do |sub| # Fetches emails grouped by class and for each class send change email
             emails = sub.emails.split(',')
 
             ChangeMailer.send_students_email(emails, params[:date], params[:header], sub.klass, hash[sub.klass], classtime, domain).deliver
@@ -80,12 +84,12 @@ class ChangesController < ApplicationController
 
     private
 
-    def get_table
+    def get_table # Parse data from change table
         @header = if (@change.date.cweek + (@change.shift == 'B' ? 1 : 0)) % 2 == Setting.shift_bit
                       1..9
                   else
                       -1..7
-                  end
+                  end #menow
 
         @date = @change.date
         @shift = @change.shift
@@ -94,7 +98,7 @@ class ChangesController < ApplicationController
                        Setting.classes_a.split(' ')
                    else
                        Setting.classes_b.split(' ')
-                   end
+                   end #my life
         
         @data = @change.data.split(',')
 

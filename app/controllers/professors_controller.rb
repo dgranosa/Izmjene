@@ -1,21 +1,21 @@
 class ProfessorsController < ApplicationController
-    before_action :parse_schedule
+    before_action :parse_schedule # Calls authentication function before anything
 
     def index
-        if params[:list]
+        if params[:list] # If parametar list is given returns list of professors
             render json: {
                 professors: $teachers.values
             }
-        elsif params[:name]
+	elsif params[:name] # else it returns professor data
             d = Date.parse(params[:date])
             update_prof_changes(d) if $prof_changes.nil? || $prof_changes[d].nil?
 
-	        show
+	    show
                 
             render json: {
                 name: params[:name],
                 data: $prof_changes[d][params[:name]],
-                schedule: $teacher_schedule[params[:name]][d.cweek % 2 == Setting.shift_bit ? 0 : 1][d.wday - 1],
+		schedule: d.wday.between?(1, 5) ? $teacher_schedule[params[:name]][d.cweek % 2 == Setting.shift_bit ? 0 : 1][d.wday - 1] : nil,
                 starttime: @starttime,
                 endtime: @endtime,
 		data2: @data2 
@@ -23,11 +23,13 @@ class ProfessorsController < ApplicationController
         end
     end
 
-    def create
+	# endmylife
+
+    def create # Redirect to professor change based on parametars name and date
         redirect_to action: "show", name: params[:name], date: params[:date]
     end
 
-    def show
+    def show # Displays professors change data for given professor
         @changeA = Change.where(shift: 'A', date: params[:date]).first
         @changeB = Change.where(shift: 'B', date: params[:date]).first
 

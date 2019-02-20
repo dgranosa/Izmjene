@@ -2,14 +2,15 @@ class ApplicationController < ActionController::Base
     include SessionsHelper
     before_action :parse_schedule
 
-    def update_prof_changes(date)
+    def update_prof_changes(date) # Create/update professors changes for given date
         $prof_changes ||= Hash.new # prof_changes[date][name][sat] = class
+				   # prof_changes is variable for 
 
-        if $prof_changes.length > 1000
+        if $prof_changes.length > 1000 # If prof_changes is full, it's emptied
             $prof_changes.reject! { |k| k < Date.today - 2.day }
         end
 
-        $prof_changes[date] ||= Hash.new
+        $prof_changes[date] ||= Hash.new # In rest of the fucntion prof_changes is created
         $teachers.values.each do |prof|
             $prof_changes[date][prof] = Array.new(15)
         end
@@ -52,7 +53,7 @@ class ApplicationController < ActionController::Base
         end
     end
 
-    def parse_schedule
+    def parse_schedule # This function parses xml file 
         return $doc unless $doc.nil?
 
         $doc = File.open('gogi.xml') { |f| Nokogiri::XML(f) }

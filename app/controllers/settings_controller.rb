@@ -1,14 +1,14 @@
 class SettingsController < ApplicationController
-    before_action :authentication
-    before_action :authorization
+    before_action :authentication # Calls authentication function before anything
+    before_action :authorization # Calls authorization function before anything
 
-    def index
+    def index # Loads settings from database and displays it
         @shift_bit = Setting.shift_bit.to_i
         @classes_a = Setting.classes_a
         @classes_b = Setting.classes_b
     end
 
-    def create
+    def create # Update settings based on parametars
         @shift_bit = params[:shift_bit].to_i
         @classes_a = params[:classes_a]
         @classes_b = params[:classes_b]
@@ -22,7 +22,7 @@ class SettingsController < ApplicationController
 
     private
 
-    def authorization
+    def authorization # Checks if current logged in user has role admin if doesn't redirects to root
         return if current_user.role == 'admin'
 
         redirect_to '/'
