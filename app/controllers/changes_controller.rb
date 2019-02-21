@@ -60,7 +60,7 @@ class ChangesController < ApplicationController
     end
 
     def send_changes # Sends emails for given change
-        hash = Hash[params[:classes].zip(params[:data].each_slice(9).to_a)]
+	hash = Hash[params[:classes].zip((params[:data].nil? ? [] : params[:data]).each_slice(9).to_a)]
         domain = request.host + ':' + request.port.to_s
 
         classtime = params[:starttime].zip(params[:endtime]).map{ |x| x.join('-') } #lanajurcevic
