@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
 		end
                 x = x.to_a[i % 9]
 
-                old_subj = $schedule[klass][y][date.wday - 1][x + 1]
+		old_subj = $schedule[klass][y][date.wday - 1][x + 1] if date.wday.between?(1, 5)
                 if !old_subj.nil?
                     old_subj.split('|').each do |sub|
                         $classessubjectsteacher[klass][sub].each do |prof|
@@ -70,6 +70,7 @@ class ApplicationController < ActionController::Base
         $classes = Hash.new
         $teachers = Hash.new
         $classrooms = Hash.new
+        $subjectslong = Hash.new # short_name: long_name
         $lessons = Hash.new # id: [classes, subject, num_of_periods, teachers, classroom]
 
 
@@ -80,7 +81,15 @@ class ApplicationController < ActionController::Base
                                            .gsub('È', 'Č')
                                            .gsub('æ', 'ć')
                                            .gsub('Æ', 'Ć')
+                                           .gsub('ð', 'đ')
 					   .titleize
+
+			$subjectslong[$subjects[x['id']]] = x['name'].to_s
+							   .gsub('è', 'č')
+							   .gsub('È', 'Č')
+							   .gsub('æ', 'ć')
+							   .gsub('Æ', 'Ć')
+                                           		   .gsub('ð', 'đ')
         end
 
         $doc.children[0].children[13].children.each do |x|
@@ -122,7 +131,9 @@ class ApplicationController < ActionController::Base
 
             x['classids'].split(',').each do |c|
                 $classessubjectsteacher[$classes[c]] ||= Hash.new
-                $classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] ||= $lessons[x['id']][3]
+		$classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] ||= Array.new
+		$classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] += $lessons[x['id']][3]
+		$classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] = $classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]].uniq
             end
         end
 
@@ -138,9 +149,8 @@ class ApplicationController < ActionController::Base
                 $schedule[c] ||= Array.new(2)
                 $schedule[c][x['weeks'].index('1')] ||= Array.new(5)
                 $schedule[c][x['weeks'].index('1')][x['days'].index('1')] ||= Array.new(15)
-                $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] ||= ''
-                $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] += '|' if $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] != ''
-                $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] += less[1]
+                $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] ||= less[1]
+                $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] += '|' + less[1] if $schedule[c][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] != less[1]
             end
 
             less[3].each do |t|

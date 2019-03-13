@@ -2,7 +2,12 @@ class ChangesController < ApplicationController
     before_action :authentication, only: [:edit, :update, :send_changes] # Calls function authentication before functions edit, update & send_changes
 
     def index
-        if params[:date] # If parametar date is given it retreaves change table for given date from database and returns data for given class in json format
+	if params[:data]
+	    render json: {
+		subjects: $subjectslong,
+		csp: $classessubjectsteacher
+	    }
+        elsif params[:date] # If parametar date is given it retreaves change table for given date from database and returns data for given class in json format
             @change = Change.where(shift: params[:shift], date: params[:date]).first
 
             @change = Change.create(shift: params[:shift], date: params[:date], data: '', data2: '') if !@change
@@ -71,7 +76,7 @@ class ChangesController < ApplicationController
         Subscription.select("string_agg(email, ',') as emails, klass").group(:klass).each do |sub| # Fetches emails grouped by class and for each class send change email
             emails = sub.emails.split(',')
 
-            ChangeMailer.send_students_email(emails, params[:date], params[:header], sub.klass, hash[sub.klass], classtime, domain).deliver
+	    ChangeMailer.send_students_email(emails, params[:date], params[:header], sub.klass, hash[sub.klass], params[:data2], classtime, domain).deliver
         end
 
         date = Date.parse(params[:date])

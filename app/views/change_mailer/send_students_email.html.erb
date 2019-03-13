@@ -50,11 +50,32 @@
           <tr>
               <% for i in 0..8 %>
                   <td>
-                    <%= @data[i] %>
+			<%= @data[i] if !@data.nil? %>
                   </td>
               <% end %>
           </tr>
       </table>
+
+	<br/>
+
+	<table id="table_data2">
+	    <tr>
+		<th>Sat</th>
+		<th>Razred</th>
+		<th>Predmet</th>
+		<th>Ucionica</th>
+	    </tr>
+	    <% if !@data2.nil? %>
+		    <% for i in 0...(@data2.count / 4) %>
+			<tr>
+			    <td><%= @data2[i * 4 + 0] %></td>
+			    <td><%= @data2[i * 4 + 1] %></td>
+			    <td><%= @data2[i * 4 + 2] %></td>
+			    <td><%= @data2[i * 4 + 3] %></td>
+			</tr>
+			<% end %>
+		<% end %>
+	</table>
       <p align = "center">
         <small>Unsubscribe <a href="http://<%= @domain %>/subscriptions/delete">here</a></small>
       </p>

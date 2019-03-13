@@ -14,6 +14,7 @@ class ProfessorsController < ApplicationController
                 
             render json: {
                 name: params[:name],
+		published: @published,
                 data: $prof_changes[d][params[:name]],
 		schedule: d.wday.between?(1, 5) ? $teacher_schedule[params[:name]][d.cweek % 2 == Setting.shift_bit ? 0 : 1][d.wday - 1] : nil,
                 starttime: @starttime,
@@ -40,6 +41,8 @@ class ProfessorsController < ApplicationController
         if !@changeB
             @changeB = Change.create(shift: 'B', date: params[:date], data: '', data2: '')
         end
+
+	@published = (@changeA.published || @changeB.published)
 
         @date = Date.parse(params[:date])
         @name = params[:name]
