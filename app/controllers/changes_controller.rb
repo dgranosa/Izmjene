@@ -4,8 +4,8 @@ class ChangesController < ApplicationController
     def index
 	if params[:data]
 	    render json: {
-		subjects: $subjectslong,
-		csp: $classessubjectsteacher
+            subjects: $subjectslong,
+            csp: $classessubjectsteacher
 	    }
         elsif params[:date] # If parametar date is given it retreaves change table for given date from database and returns data for given class in json format
             @change = Change.where(shift: params[:shift], date: params[:date]).first
@@ -15,7 +15,7 @@ class ChangesController < ApplicationController
             get_table
             i = @classes.find_index(params[:class]) * 9
             rdata = @data[i..(i+8)]
-	    x = ((@header.first == -1 ? 1 : 0) + (params[:shift] == 'A' ? 0 : 1)) % 2
+            x = ((@header.first == -1 ? 1 : 0) + (params[:shift] == 'A' ? 0 : 1)) % 2
 
             render json: {
                 header: @header.to_a,
@@ -24,7 +24,7 @@ class ChangesController < ApplicationController
                 schedule: @change.date.wday.between?(1, 5) ? $schedule[params[:class]][x][@change.date.wday - 1][@header.first == -1 ? 6..14 : 1..9] : nil,
                 starttime: @starttime,
                 endtime: @endtime,
-		published: @change.published,
+                published: @change.published,
                 updated_at: @change.updated_at.to_s
             }
         end # If parametar is not given html is rendered
@@ -69,14 +69,14 @@ class ChangesController < ApplicationController
         domain = request.host + ':' + request.port.to_s
 
         classtime = params[:starttime].zip(params[:endtime]).map{ |x| x.join('-') } #lanajurcevic
-
-	@change = Change.where(shift: params[:shift], date: params[:date]).first
-	@change.update(published: true)
+        
+        @change = Change.where(shift: params[:shift], date: params[:date]).first
+        @change.update(published: true)
 
         Subscription.select("string_agg(email, ',') as emails, klass").group(:klass).each do |sub| # Fetches emails grouped by class and for each class send change email
             emails = sub.emails.split(',')
-
-	    ChangeMailer.send_students_email(emails, params[:date], params[:header], sub.klass, hash[sub.klass], params[:data2], classtime, domain).deliver
+            
+            ChangeMailer.send_students_email(emails, params[:date], params[:header], sub.klass, hash[sub.klass], params[:data2], classtime, domain).deliver
         end
 
         date = Date.parse(params[:date])

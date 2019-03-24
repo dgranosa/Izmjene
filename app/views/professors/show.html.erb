@@ -1,75 +1,84 @@
 <head>
-        <%= stylesheet_link_tag "changes" %>
-        <%= stylesheet_link_tag "common" %>
+  <%= stylesheet_link_tag "changes" %>
+  <%= stylesheet_link_tag "common" %>
 </head>
 
 <body>
-        <ul class="MenuList">
-                <li class="MenuListItem"><a href="/">Pocetna</a></li>
-                <li class="MenuListItem"><a href="/changes">Izmjene za ucenike</a></li>
-                <li class="MenuListItem"><a class="active" href="/professors">Izmjene za profesore</a></li>
-                <li class="MenuListItem"><a href="/subscriptions">Pretplata</a></li>
-                <li class="MenuListItem"><a href="/settings">Postavke</a></li>
-        </ul>
-        <%= button_to "Back", changes_path, method: :get %>
-        <div align="center">
-                <h1>Izmjene za <%= @date.strftime('%d/%m/%Y') %> - <%= @name %></h1>
-                <table>
-                <tr>
-                        <th></th>
-                        <% for i in 0..13 %>
-				<th>
-					<%= Time.parse(@starttime[i]).strftime("%R") %> - <%= Time.parse(@endtime[i]).strftime("%R") %>
-				</th>
-                        <% end %>
-                </tr>
-			<tr>
-			<th/>
-                        <% for i in 1..7 %>
-					<th>
-					<%= i %>
-					</th>
-                        <% end %>
-                        <% for i in 1..7 %>
-					<th>
-					<%= i %>
-					</th>
-                        <% end %>
-                </tr>
-                <tr>
-                        <th><%= @name%></th>
-                        <% for i in 0..13 %>
-                                <td>
-                                        <%= @change[i] %>
-                                </td>
-                        <% end %>
-                </tr>
-		</table>
+  <ul class="MenuList">
+    <li class="MenuListItem"><a href="/">Pocetna</a></li>
+    <li class="MenuListItem"><a href="/changes">Izmjene za ucenike</a></li>
+    <li class="MenuListItem"><a class="active" href="/professors">Izmjene za profesore</a></li>
+    <li class="MenuListItem"><a href="/subscriptions">Pretplata</a></li>
+    <li class="MenuListItem"><a href="/settings">Postavke</a></li>
+  </ul>
+  <%= button_to "Back", changes_path, method: :get %>
+  <div align="center">
+    <h1>Izmjene za <%= @date.strftime('%d/%m/%Y') %> - <%= @name %></h1>
+    <table>
+      <tr>
+        <th />
+        <% for i in 0..8 %>
+          <th>
+            <%= Time.parse(@starttimeU[i]).strftime("%R") %> - <%= Time.parse(@endtimeU[i]).strftime("%R") %>
+          </th>
+        <% end %>
+        <th /> <th /> <th /> <th /> <th />
+      </tr>
+      <tr>
+        <th /> <th /> <th /> <th /> <th /> <th />
+        <% for i in 0..8 %>
+          <th>
+            <%= Time.parse(@starttimeP[i]).strftime("%R") %> - <%= Time.parse(@endtimeP[i]).strftime("%R") %>
+          </th>
+        <% end %>
+      </tr>
+      <tr>
+        <th/>
+          <% for i in 1..7 %>
+            <th>
+              <%= i %>
+            </th>
+          <% end %>
+          <% for i in 1..7 %>
+            <th>
+              <%= i %>
+            </th>
+          <% end %>
+      </tr>
+      <tr>
+        <th><%= @name%></th>
+        <% for i in 0..13 %>
+          <td>
+            <%= @change[i] %>
+          </td>
+        <% end %>
+      </tr>
+    </table>
 
-		<table>
-			<tr>
-				<th>
-					Sat
-				</th>
-				<th>
-					Razred
-				</th>
-				<th>
-					Predmet
-				</th>
-				<th>
-					Ucionica
-				</th>
-			</tr>
-			<br/ >
-			<%for i in 0...(@data2.count / 4) %>
-				<tr>
-					<td><%= @data2[i * 4 + 0]%></td>
-					<td><%= @data2[i * 4 + 1]%></td>
-					<td><%= @data2[i * 4 + 2]%></td>
-					<td><%= @data2[i * 4 + 3]%></td>
-				</tr>
-			<%end %>
-		</table>
-        </div>
+    <table>
+      <tr>
+        <th>
+          Sat
+        </th>
+        <th>
+          Razred
+        </th>
+        <th>
+          Predmet
+        </th>
+        <th>
+          Ucionica
+        </th>
+      </tr>
+      <br/ >
+      <%for i in 0...(@data2.count / 4) %>
+        <tr>
+          <td><%= @data2[i * 4 + 0]%></td>
+          <td><%= @data2[i * 4 + 1]%></td>
+          <td><%= @data2[i * 4 + 2]%></td>
+          <td><%= @data2[i * 4 + 3]%></td>
+        </tr>
+      <%end %>
+    </table>
+  </div>
 </body>

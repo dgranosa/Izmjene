@@ -82,14 +82,14 @@ class ApplicationController < ActionController::Base
                                            .gsub('æ', 'ć')
                                            .gsub('Æ', 'Ć')
                                            .gsub('ð', 'đ')
-					   .titleize
+                                           .titleize
 
 			$subjectslong[$subjects[x['id']]] = x['name'].to_s
-							   .gsub('è', 'č')
-							   .gsub('È', 'Č')
-							   .gsub('æ', 'ć')
-							   .gsub('Æ', 'Ć')
-                                           		   .gsub('ð', 'đ')
+                                                         .gsub('è', 'č')
+                                                         .gsub('È', 'Č')
+                                                         .gsub('æ', 'ć')
+                                                         .gsub('Æ', 'Ć')
+                                                         .gsub('ð', 'đ')
         end
 
         $doc.children[0].children[13].children.each do |x|
@@ -131,9 +131,9 @@ class ApplicationController < ActionController::Base
 
             x['classids'].split(',').each do |c|
                 $classessubjectsteacher[$classes[c]] ||= Hash.new
-		$classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] ||= Array.new
-		$classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] += $lessons[x['id']][3]
-		$classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] = $classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]].uniq
+                $classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] ||= Array.new
+                $classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] += $lessons[x['id']][3]
+                $classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]] = $classessubjectsteacher[$classes[c]][$subjects[x['subjectid']]].uniq
             end
         end
 
@@ -157,7 +157,7 @@ class ApplicationController < ActionController::Base
                 $teacher_schedule[t] ||= Array.new(2)
                 $teacher_schedule[t][x['weeks'].index('1')] ||= Array.new(5)
                 $teacher_schedule[t][x['weeks'].index('1')][x['days'].index('1')] ||= Array.new(15)
-		$teacher_schedule[t][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] = less[0].join('|') + ' (' + less[1] + ')'
+                $teacher_schedule[t][x['weeks'].index('1')][x['days'].index('1')][x['period'].to_i] = less[0].join('|') + ' (' + less[1] + ')'
             end
         end
     end
