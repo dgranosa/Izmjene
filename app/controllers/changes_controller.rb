@@ -82,8 +82,37 @@ class ChangesController < ApplicationController
         date = Date.parse(params[:date])
         update_prof_changes(date)
 
+        changeA = Change.where(shift: 'A', date: params[:date]).first
+        changeB = Change.where(shift: 'B', date: params[:date]).first
+        changeA = Change.create(shift: 'A', date: params[:date], data: '', data2: '') if changeA.nil?
+        changeB = Change.create(shift: 'B', date: params[:date], data: '', data2: '') if changeB.nil?
+
+        prof_mail_data = Hash.new
+
+        prof_mail_data[:data2] = changeA.data2.split(',')
+        prof_mail_data[:data2] += changeB.data2.split(',')
+
+        prof_mail_data[:date] = params[:date]
+
+        prof_mail_data[:starttimeU] = $starttime_arr[0..8]
+        prof_mail_data[:endtimeU] = $endtime_arr[0..8]
+        prof_mail_data[:starttimeP] = $starttime_arr[9..13]
+        prof_mail_data[:endtimeP] = $endtime_arr[9..13]
+
+        if date.cweek % 2 == Setting.shift_bit
+          prof_mail_data[:starttimeU] = changeA.starttime.split(',') unless changeA.starttime.nil?
+          prof_mail_data[:endtimeU] = changeA.endtime.split(',') unless changeA.endtime.nil?
+          prof_mail_data[:starttimeP] = changeB.starttime.split(',') unless changeB.starttime.nil?
+          prof_mail_data[:endtimeP] = changeB.endtime.split(',') unless changeB.endtime.nil?
+        else
+          prof_mail_data[:starttimeU] = changeB.starttime.split(',') unless changeB.starttime.nil?
+          prof_mail_data[:endtimeU] = changeB.endtime.split(',') unless changeB.endtime.nil?
+          prof_mail_data[:starttimeP] = changeA.starttime.split(',') unless changeA.starttime.nil?
+          prof_mail_data[:endtimeP] = changeA.endtime.split(',') unless changeA.endtime.nil?
+        end
+
         Psubscription.all.each do |sub|
-            ChangeMailer.send_professor_email(sub.email, sub.name, params[:date], $prof_changes[date][sub.name], domain).deliver
+            ChangeMailer.send_professor_email(sub.email, sub.name, $prof_changes[date][sub.name], prof_mail_data, domain).deliver
         end
     end
 

@@ -14,14 +14,19 @@ class ChangeMailer < ApplicationMailer
         mail(bcc: @email, subject: 'Izmjene za ' + date)
     end
 
-    def send_professor_email(email, name, date, data, domain)
+    def send_professor_email(email, name, data, mail_data, domain)
         @email = email
         @name = name
-        @date = date
         @data = data
+        @data2 = mail_data[:data2]
+        @date = mail_data[:date]
+        @starttimeU = mail_data[:starttimeU]
+        @endtimeU = mail_data[:endtimeU]
+        @starttimeP = mail_data[:starttimeP]
+        @endtimeP = mail_data[:endtimeP]
         @domain = domain
 
-        mail(to: @email, subject: 'Izmjene za ' + date)
+        mail(to: @email, subject: 'Izmjene za ' + @date)
     end
 
     def send_email_confirmation(email, url)
