@@ -7,7 +7,7 @@ class ChangeMailer < ApplicationMailer
         @header = header
         @klass = klass
         @data = data
-	@data2 = data2
+        @data2 = data2
         @classtime = classtime
         @domain = domain
 
@@ -19,9 +19,7 @@ class ChangeMailer < ApplicationMailer
         @name = name
         @date = date
         @data = data
-	@domain = domain
-
-	binding.pry
+        @domain = domain
 
         mail(to: @email, subject: 'Izmjene za ' + date)
     end
