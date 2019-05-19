@@ -87,6 +87,20 @@ class ChangesController < ApplicationController
         changeA = Change.create(shift: 'A', date: params[:date], data: '', data2: '') if changeA.nil?
         changeB = Change.create(shift: 'B', date: params[:date], data: '', data2: '') if changeB.nil?
 
+        if (changeA.date.cweek % 2) != Setting.shift_bit
+          x = changeA.data2.split(',')
+          (0...x.length).step(4).each do |index|
+            x[index] = (Integer(x[index]) + 7).to_s
+          end
+          changeA.data2 = x.join(',')
+        else
+          x = changeB.data2.split(',')
+          (0...x.length).step(4).each do |index|
+            x[index] = (Integer(x[index]) + 7).to_s
+          end
+          changeB.data2 = x.join(',')
+        end
+
         prof_mail_data = Hash.new
 
         prof_mail_data[:data2] = changeA.data2.split(',')
@@ -111,8 +125,24 @@ class ChangesController < ApplicationController
           prof_mail_data[:endtimeP] = changeA.endtime.split(',') unless changeA.endtime.nil?
         end
 
+
         Psubscription.all.each do |sub|
-            ChangeMailer.send_professor_email(sub.email, sub.name, $prof_changes[date][sub.name], prof_mail_data, domain).deliver
+          # Ako ne dolaze izmjene za ucionice odkomontirati ovo ispod
+          # data2 = prof_mail_data[:data2]
+          #
+          # I obrisati
+          data2 = Array.new
+          (0...prof_mail_data[:data2].length).step(4).each do |index|
+            x = Integer(prof_mail_data[:data2][index])
+            klass = prof_mail_data[:data2][index+1]
+            if $prof_changes[date][sub.name][x-1].to_s.split(" ")[0].to_s == klass
+              data2 += prof_mail_data[:data2][index..(index+4)]
+            elsif $teacher_schedule[sub.name][date.cweek % 2 == Setting.shift_but ? 0 : 1][date.wday - 1][x].to_s.split(" ")[0].to_s == klass
+              data2 += prof_mail_data[:data2][index..(index+4)]
+            end
+          end
+          # do ovde
+          ChangeMailer.send_professor_email(sub.email, sub.name, $prof_changes[date][sub.name], data2, prof_mail_data, domain).deliver
         end
     end
 

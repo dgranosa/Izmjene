@@ -14,11 +14,11 @@ class ChangeMailer < ApplicationMailer
         mail(bcc: @email, subject: 'Izmjene za ' + date)
     end
 
-    def send_professor_email(email, name, data, mail_data, domain)
+    def send_professor_email(email, name, data, data2, mail_data, domain)
         @email = email
         @name = name
         @data = data
-        @data2 = mail_data[:data2]
+        @data2 = data2
         @date = mail_data[:date]
         @starttimeU = mail_data[:starttimeU]
         @endtimeU = mail_data[:endtimeU]
