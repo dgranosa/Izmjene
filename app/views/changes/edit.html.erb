@@ -57,7 +57,7 @@
                 </tr>
                 <% for i in 0...(@data2.count / 4) %>
                     <tr>
-                        <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 0] %></td>
+                        <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 0], onkeyup: "this.value=this.value.replace(/[^\\-\\d]+/,'')" %></td>
                         <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 1] %></td>
                         <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 2], autocomplete: :off, list: 'subject-list' %></td>
                         <td><%= f.text_field :data2, multiple: true, value: @data2[i * 4 + 3] %></td>
@@ -76,5 +76,5 @@
     </datalist>
 </body>
     <script>
-        x = "<tr><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" autocomplete=\"off\" list=\"subject-list\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input type=\"button\" value=\"-\" onclick=\"$(this).closest('tr').remove()\"></td></tr>"
+        x = "<tr><td><input multiple=\"multiple\" type=\"text\" onkeyup=\"this.value=this.value.replace(/[^\\-\\d]+/,'')\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" autocomplete=\"off\" list=\"subject-list\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input multiple=\"multiple\" type=\"text\" name=\"change[data2][]\" id=\"change_data2\"></td><td><input type=\"button\" value=\"-\" onclick=\"$(this).closest('tr').remove()\"></td></tr>"
     </script>
